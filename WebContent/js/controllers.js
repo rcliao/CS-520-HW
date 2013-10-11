@@ -43,13 +43,63 @@ function HomeCtrl($scope, $rootScope, $location, $route, envResources,
 			$rootScope.loginUser = user;
 		}, function(err) {
 			if (err.status == 401) {
-
+				$rootScope.$broadcast('signup-failed', {});
+			} else if (err.status == 500) {
+				$rootScope.$broadcast('server-error', {});
 			}
 		});
 	};
 }
 
 function MainCtrl($scope, $http, $rootScope, $cookieStore) {
+	$rootScope.$on('event-created', function() {
+		$scope.setAlert({
+			type : 'success',
+			msg : 'Event was created successfully'
+		});
+	});
+	
+	$rootScope.$on('signup-failed', function() {
+		$scope.setAlert({
+			type : 'error',
+			msg : 'Sign up process failed'
+		});
+	});
+	
+	$rootScope.$on('server-error', function() {
+		$scope.setAlert({
+			type : 'error',
+			msg : 'Ooops, server error'
+		});
+	});
+
+	$rootScope.$on('email-sent', function() {
+		$scope.setAlert({
+			type : 'success',
+			msg : 'Email sent'
+		});
+	});
+	
+	$rootScope.$on('signin-req', function() {
+		$scope.setAlert({
+			type : 'warning',
+			msg : 'Sign in required'
+		});
+	});
+
+	$scope.alerts = [];
+
+	$scope.setAlert = function(msg) {
+		// { type: 'error', msg: 'Oh snap! Change a few things up and try
+		// submitting again.' },
+		$scope.alerts = [];
+		$scope.alerts.push(msg);
+	};
+
+	$scope.closeAlert = function(index) {
+		$scope.alerts.splice(index, 1);
+	};
+	
 	$rootScope.loginUser = $cookieStore.get('user') || null;
 
 	// this is what makes basic authorization
@@ -61,6 +111,7 @@ function MainCtrl($scope, $http, $rootScope, $cookieStore) {
 
 function CreateCtrl($scope, $location, $rootScope, envResources) {
 	if (!$rootScope.loginUser) {
+		$rootScope.$broadcast('signin-req', {});
 		$location.path('#/home');
 	}
 
@@ -91,35 +142,9 @@ function CreateCtrl($scope, $location, $rootScope, envResources) {
 
 function EventsListCtrl($scope, $rootScope, $location, $modal, envResources) {
 	if (!$rootScope.loginUser) {
+		$rootScope.$broadcast('signin-req', {});
 		$location.path('#/home');
 	}
-
-	$rootScope.$on('event-created', function() {
-		$scope.setAlert({
-			type : 'success',
-			msg : 'Event was created successfully'
-		});
-	});
-
-	$rootScope.$on('email-sent', function() {
-		$scope.setAlert({
-			type : 'success',
-			msg : 'Email sent'
-		});
-	});
-
-	$scope.alerts = [];
-
-	$scope.setAlert = function(msg) {
-		// { type: 'error', msg: 'Oh snap! Change a few things up and try
-		// submitting again.' },
-		$scope.alerts = [];
-		$scope.alerts.push(msg);
-	};
-
-	$scope.closeAlert = function(index) {
-		$scope.alerts.splice(index, 1);
-	};
 
 	envResources.getEvents(function(res) {
 		$scope.events = res;

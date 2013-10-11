@@ -48,6 +48,9 @@
 	<!-- Header -->
 	<ng-include src="'header.html'"></ng-include>
 	
+	<!-- Error message Area -->
+	<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+	
 	<!-- Using AngularJS to route the page -->
 	<div ng-view></div>
 </body>
