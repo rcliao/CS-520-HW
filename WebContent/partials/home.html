@@ -1,0 +1,49 @@
+<div id="home-intro">
+	<h1 class="text-center">
+		<i class="glyphicon glyphicon-envelope"></i>Envitation
+	</h1>
+	<p>
+		Hello, Envitation is a simple web-application that let user send the i(E)nvitation letter through email
+	</p>
+</div>
+
+<div class="clearfix"></div>
+
+<div id="home-signup" ng-hide="loginUser">
+	<h3 class="text-center">Signup Here</h3>
+	
+	<form class="form-horizontal" role="form">
+		<div class="control-group">
+			<label for="inputUsername" class="col-lg-3 control-label">Username</label>
+			<div class="controls">
+				<input type="text" class="input-medium" id="inputUsername"
+					placeholder="Username" ng-model="user.username">
+			</div>
+		</div>
+		<div class="control-group">
+	    <label for="inputPassword" class="col-lg-3 control-label">Password</label>
+	    <div class="controls">
+	      <input type="password" class="input-medium" id="inputPassword" placeholder="Password" ng-model="user.password">
+	    </div>
+	  </div>
+	  <div class="control-group">
+	    <label for="inputEmail" class="col-lg-3 control-label">Email</label>
+	    <div class="controls">
+	      <input type="email" class="input-medium" id="inputEmail" placeholder="Email" ng-model="user.email">
+	    </div>
+	  </div>
+	  <div class="control-group">
+	    <label for="inputFirstName" class="col-lg-5 control-label">First Name</label>
+	    <div class="controls">
+	      <input type="text" class="input-medium" id="inputFirstName" placeholder="First Name" ng-model="user.firstName">
+	    </div>
+	  </div>
+	  <div class="control-group">
+	    <label for="inputLastName" class="col-lg-5 control-label">Last Name</label>
+	    <div class="controls">
+	      <input type="text" class="input-medium" id="inputLastName" placeholder="Last Name" ng-model="user.lastName">
+	    </div>
+	  </div>
+	  <button type="submit" class="btn btn-warning pull-right" ng-click="register(user)">Signup</button>
+	</form>
+</div>

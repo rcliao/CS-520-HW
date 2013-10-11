@@ -1,0 +1,48 @@
+<div class="modal-header">
+	<h3>Email Notification</h3>
+</div>
+<div class="modal-body">
+	<ul class="guest-emails">
+		<li ng-repeat="guest in guests">
+		<ng-switch on="guest.respond">
+			<div class="guest-img-input" ng-switch-when="false">
+				<span class="email-checkbox">
+					<input type="checkbox" ng-model="guest.emailNoti">
+				</span>
+				<div class="guest-img pull-left text-center">
+					<img ng-src="https://identicons.github.com/{{ guest.name }}.png">
+					<small class="text-muted">{{ guest.name }}</small>
+					<div class="guest-res">
+						<i class="icon-remove"></i>
+					</div>
+				</div>
+			</div>
+			<div class="guest-img-input" ng-switch-when="true">
+				<span class="email-checkbox">
+					<input type="checkbox" ng-model="guest.emailNoti">
+				</span>
+				<div class="guest-img pull-left text-center">
+					<img ng-src="https://identicons.github.com/{{ guest.name }}.png">
+					<small class="text-muted">{{ guest.name }}</small>
+					<div class="guest-res">
+						<i class="icon-ok"></i>
+					</div>
+				</div>
+			</div>
+		</ng-switch>
+		</li>
+	</ul>
+	<div class="clearfix"></div>
+	<hr>
+	<button class="btn btn-default" ng-click="selectAll()">Select All</button>
+	<hr>
+	<h1>Message</h1>
+	<textarea class="input-block-level" ng-model="message"></textarea>
+</div>
+<div class="modal-footer">
+	<p class="pull-left">
+		<input type="checkbox"> Include RSVP
+	</p>
+	<button class="btn btn-primary" ng-click="sendEmails(message)"><i class="icon-envelope"></i>Send</button>
+	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

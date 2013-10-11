@@ -1,0 +1,63 @@
+<div class="container">
+	<div id="env-letter" class="env-minimal pull-left">
+		<div class="env-img center">
+			<img src="img/halloween-img1.png">
+		</div>
+		<h2 class="text-center"><input class="input-block-level" type="text" ng-model="event.title" placeholder="Title"></h2>
+		<div id="env-host" class="pull-left">
+			<h3>Host:</h3>
+			<dl class="dl-horizontal">
+			  <dt>Name</dt>
+			  <dd>{{ loginUser.firstName }} {{ loginUser.lastName }}</dd>
+			</dl>
+			<dl class="dl-horizontal">
+			  <dt>Email</dt>
+			  <dd>{{ loginUser.email }}</dd>
+			</dl>
+		</div>
+		<div id="env-message" class="pull-right">
+			<h3>Message:</h3>
+			<textarea class="form-control" rows="4" ng-model="event.message">
+			</textarea>
+		</div>
+	</div>
+	<div id="env-guests" class="pull-left">
+		<h2 class="text-center">Invite Guests</h2>
+		<div id="input-guest">
+			<form class="form-horizontal" role="form">
+			  <div class="control-group">
+			    <label for="inputName" class="control-label">Name</label>
+			    <div class="controls">
+			      <input type="text" class="input-medium" id="inputName" placeholder="Name" ng-model="guest.name">
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label for="inputEmail" class="control-label">Email</label>
+			    <div class="controls">
+			      <input type="email" class="input-medium" id="inputEmail" placeholder="Email" ng-model="guest.email">
+			    </div>
+			  </div>
+			  <input type="submit" class="btn btn-info btn-block" value="Add" ng-click="addGuest(guest)">
+			</form>
+		</div>
+		<div id="env-guests-list">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="guest in event.guests">
+						<td>{{ guest.name }}</td>
+						<td>{{ guest.email }}</td>
+						<td><button type="button" class="btn btn-warning btn-xs" ng-click="deleteGuest($index)">del</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<input type="submit" class="btn btn-info btn-block" value="Create Envitation" ng-click="createEvent()">
+	</div>
+</div>

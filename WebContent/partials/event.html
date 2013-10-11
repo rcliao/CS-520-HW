@@ -1,0 +1,61 @@
+<div class="container">
+	<div id="env-letter" class="env-minimal pull-left">
+		<div class="env-img center">
+			<img src="img/halloween-img1.png">
+		</div>
+		<h2 class="text-center">{{ event.title }}</h2>
+		<div id="env-host" class="pull-left">
+			<h3>Host:</h3>
+			<dl class="dl-horizontal">
+				<dt>Name</dt>
+				<dd>{{ event.creator.firstName }} {{ event.creator.lastName }}</dd>
+			</dl>
+			<dl class="dl-horizontal">
+				<dt>Email</dt>
+				<dd>{{ event.creator.email }}</dd>
+			</dl>
+		</div>
+		<div id="env-message" class="pull-right">
+			<h3>Message:</h3>
+			<div class="well">{{ event.message }}</div>
+		</div>
+	</div>
+	<div id="env-guests" class="pull-left">
+		<div class="well">
+			<h3>Going</h3>
+			<ul>
+				<li ng-repeat="guest in goingGuests">
+					<div class="guest-img pull-left text-center">
+						<img ng-src="https://identicons.github.com/{{ guest.name }}.png">
+						<small class="text-muted">{{ guest.name }}</small>
+						<div class="guest-res">
+							<i class="icon-remove"></i>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="well">
+			<h3>Not Going</h3>
+			<ul>
+				<li ng-repeat="guest in notGoingGuests">
+					<div class="guest-img pull-left text-center">
+						<img ng-src="https://identicons.github.com/{{ guest.name }}.png">
+						<small class="text-muted">{{ guest.name }}</small>
+						<div class="guest-res">
+							<i class="icon-remove"></i>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="well">
+			<button type="button" class="btn btn-primary"
+				ng-click="openEmailPanel(event.guests, eventId)">
+				<i class="icon-envelope"></i>Email
+			</button>
+		</div>
+	</div>
+</div>

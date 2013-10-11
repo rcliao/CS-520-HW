@@ -1,0 +1,175 @@
+body {
+  height: 100%;
+  background: url(../img/index-wallpaper.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+label.remember {
+  color: gray;
+}
+li.login-header {
+  padding: 7px 0;
+}
+.navbar .btn {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+form.form-inline {
+  margin: 0;
+}
+/**
+ * Home page
+ */
+#home-intro {
+  float: right;
+  margin-right: 30px;
+  width: 300px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #FAAC58;
+  border: 2px solid gray;
+  -moz-box-shadow: 3px 3px 10px 3px #666;
+  -webkit-box-shadow: 3px 3px 10px 3px #666;
+  box-shadow: 3px 3px 10px 3px #666;
+}
+#home-intro h1 {
+  border-bottom: 1px solid gray;
+}
+#home-intro p {
+  margin-left: 1em;
+  font-size: 1.2em;
+  text-decoration: underline;
+}
+#home-signup {
+  float: right;
+  margin-top: 30px;
+  margin-right: 30px;
+  width: 375px;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 20px;
+}
+#home-signup h3 {
+  border-bottom: 1px solid lightgray;
+}
+.center {
+  margin: 0 auto;
+}
+ul.guest-emails {
+  list-style: none;
+}
+ul.guest-emails li {
+  float: left;
+}
+/**
+ * Create Event Page
+ */
+#env-letter {
+  width: 740px;
+  height: 420px;
+  padding: 20px;
+  border: 2px solid orange;
+  background-color: #F7BE81;
+}
+#env-letter .env-img {
+  width: 200px;
+  height: 150px;
+}
+#env-letter .env-img img {
+  width: 100%;
+}
+#env-letter h2,
+#env-letter h3 {
+  color: red;
+}
+#env-letter h2 > input {
+  text-align: center;
+  color: orange;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+}
+#env-letter #env-message {
+  width: 350px;
+}
+#env-guests {
+  width: 300px;
+  height: 450px;
+  padding: 5px 5px;
+  border: 2px solid orange;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+#env-guests h2 {
+  color: orange;
+  border-bottom: 1px solid lightgray;
+}
+#env-guests #input-guest {
+  padding-bottom: 5px;
+  border-bottom: 1px solid gray;
+}
+#env-guests #input-guest form .control-label {
+  width: 80px;
+}
+#env-guests #input-guest form .controls {
+  margin-left: 100px;
+}
+#env-guests #env-guests-list {
+  height: 195px;
+  margin: 5px 0;
+  overflow-y: auto;
+}
+.event-list {
+  border: 2px solid gray;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+.event-list ul {
+  list-style: none;
+}
+.event-list ul.inline {
+  list-style: inline;
+}
+.guest-img {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  padding: 2px;
+  background-color: white;
+  border: 1px solid gray;
+  margin: 5px;
+  margin-left: 20px;
+  margin-top: 0;
+}
+.guest-img .guest-res {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.guest-img img {
+  width: 100%;
+}
+.guest-img-input {
+  position: relative;
+  width: 80px;
+  height: 60px;
+  padding: 5px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 5px;
+  margin: 5px;
+}
+.guest-img-input .email-checkbox {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background-color: gray;
+}
+.guest-img-input .email-checkbox input[type="checkbox"] {
+  margin-top: 27px;
+  margin-left: 3px;
+}
