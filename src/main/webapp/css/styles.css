@@ -1,0 +1,20 @@
+.guest-img {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  padding: 2px;
+  background-color: white;
+  border: 1px solid gray;
+  margin: 5px;
+  margin-left: 20px;
+  margin-bottom: 25px;
+  margin-top: 0;
+}
+.guest-img .guest-res {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.guest-img img {
+  width: 100%;
+}
