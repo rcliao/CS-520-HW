@@ -26,7 +26,7 @@ public class Event implements Serializable {
 	private String title;
 	private String message;
 	
-	@OneToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+	@OneToMany( cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
 	private List<Guest> guests;
 	
 	@OneToOne( cascade = CascadeType.ALL )

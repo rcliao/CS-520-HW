@@ -19,6 +19,7 @@ public class Guest implements Serializable {
 	
 	private String name;
 	private String email;
+	private boolean emailed;
 	private boolean respond;
 	
 	// setters / getters
@@ -45,5 +46,9 @@ public class Guest implements Serializable {
 	}
 	public void setRespond(boolean respond) {
 		this.respond = respond;
+	}
+	public boolean getEmailed() { return emailed; }
+	public void setEmailed(boolean emailed) {
+		this.emailed = emailed;
 	}
 }

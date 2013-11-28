@@ -29,6 +29,12 @@
 
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost" />
+        <property name="username" value="cysun@localhost.localdomain" />
+        <property name="password" value="abcd" />
+    </bean>
+
     <context:annotation-config />
 
     <tx:annotation-driven />

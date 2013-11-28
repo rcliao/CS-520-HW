@@ -19,7 +19,7 @@
 
     <servlet-mapping>
         <servlet-name>520-Envite</servlet-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
     
     <listener>

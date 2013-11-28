@@ -69,31 +69,31 @@ public class EventController {
 
         eventDao.saveEvent( event );
 
-        // for ( Guest g : event.getGuests() ) {
-        //     String from = event.getCreator().getEmail();
-        //     String to = g.getEmail();
-        //     String subject = event.getTitle();
-        //     String content = event.getMessage();
+        for ( Guest g : event.getGuests() ) {
+            String from = event.getCreator().getEmail();
+            String to = g.getEmail();
+            String subject = event.getTitle();
+            String content = event.getMessage();
 
-        //     Properties props = System.getProperties();
-        //     props.put( "mail.smtp.host", "localhost" );
-        //     Session session2 = Session.getInstance( props );
+            Properties props = System.getProperties();
+            props.put( "mail.smtp.host", "localhost" );
+            Session session2 = Session.getInstance( props );
 
-        //     Message msg = new MimeMessage( session2 );
-        //     try
-        //     {
-        //         msg.setFrom( new InternetAddress( from ) );
-        //         msg.setRecipient( RecipientType.TO, new InternetAddress( to ) );
-        //         msg.setSubject( subject );
-        //         msg.setText( content );
+            Message msg = new MimeMessage( session2 );
+            try
+            {
+                msg.setFrom( new InternetAddress( from ) );
+                msg.setRecipient( RecipientType.TO, new InternetAddress( to ) );
+                msg.setSubject( subject );
+                msg.setText( content );
 
-        //         Transport.send( msg );
-        //     }
-        //     catch( Exception e )
-        //     {
-        //         throw new ServletException( e );
-        //     }
-        // }
+                Transport.send( msg );
+            }
+            catch( Exception e )
+            {
+                throw new ServletException( e );
+            }
+        }
 
         return event;
     }
