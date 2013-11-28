@@ -2,10 +2,12 @@ package envite.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.sql.Blob;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob; 
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -29,6 +31,9 @@ public class Event implements Serializable {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private User creator;
+
+	@Lob
+	private Blob banner;
 
 	public Integer getId() {
 		return id;
