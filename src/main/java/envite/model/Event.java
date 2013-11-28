@@ -29,9 +29,10 @@ public class Event implements Serializable {
 	@OneToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
 	private List<Guest> guests;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne( cascade = CascadeType.ALL )
 	private User creator;
 
+	// Store the banner image in database
 	@Lob
 	private Blob banner;
 
