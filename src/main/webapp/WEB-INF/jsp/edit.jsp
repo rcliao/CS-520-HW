@@ -58,7 +58,7 @@
 						<form name="createEventForm">
 							<section class="8u feature">
 								<div class="image-wrapper">
-									<a href="#" class="image"><img src="images/turkey_icon.png" alt="A turkey image" /></a>
+									<a href="upload.html?id=${event.id}" class="image"><img src="bannerImg.html?id=${event.id}" alt="" /></a>
 								</div>
 								<header>
 									<h2><b>Create Event from ${ loginUser.firstName } ${ loginUser.lastName }</b></h2>

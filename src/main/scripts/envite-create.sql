@@ -1,6 +1,8 @@
 
+    
     create table events (
         id int4 not null,
+        banner oid,
         message varchar(255),
         title varchar(255),
         creator_id int4,
@@ -16,6 +18,7 @@
     create table guests (
         id int4 not null,
         email varchar(255),
+        emailed boolean not null,
         name varchar(255),
         respond boolean not null,
         primary key (id)
@@ -64,6 +67,7 @@
 
     INSERT INTO events
                 VALUES (1,
+                null,
                 'Welcome to Halloween Party',
                 'Happy Halloween',
                 1);
@@ -71,6 +75,7 @@
     INSERT INTO guests
                 VALUES (1,
                 'rcliao01@gmail.com',
+                false,
                 'Eric',
                 false);
 
@@ -78,6 +83,7 @@
     INSERT INTO guests
                 VALUES (2,
                 'rcliao01@gmail.com',
+                false,
                 'Eric2',
                 false);
 

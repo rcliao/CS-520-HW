@@ -1,30 +1,40 @@
-function EventCtrl($http) {
-	this.event = {
+var app = angular.module('envite', []);
+
+app.factory('formDataObject', function() {
+    return function(data) {
+        var fd = new FormData();
+        angular.forEach(data, function(value, key) {
+            fd.append(key, value);
+        });
+        return fd;
+    };
+});
+
+app.controller('EventCtrl', function($scope, $http, formDataObject) {
+	$scope.event = {
 		title: '',
 		message: '',
 		guests: []
 	};
 
-	this.$http = $http;
-};
-
-EventCtrl.prototype.createEvent = function() {
-
-	this.$http.post('create.html', this.event)
-		.success( function() {
-			window.location = "events.html";
+	$scope.createEvent = function() {
+		$http({
+			method: 'POST',
+			url: 'create.html', 
+			data: $scope.event
+		})
+		.success( function(data) {
+			console.log(data);
+			window.location = "upload.html?id=" + data.id;
 		});
-};
+	};
 
-EventCtrl.prototype.addGuest = function() {
+	$scope.addGuest = function() {
+		$scope.event.guests.push($scope.guest);
+		$scope.guest = {};
+	};
 
-	this.event.guests.push(this.guest);
-
-	this.guest = {};
-};
-
-EventCtrl.prototype.deleteGuest = function(index) {
-
-    this.event.guests.splice(index, 1);
-
-}
+	$scope.deleteGuest = function(index) {
+		$scope.event.guests.splice(index, 1);
+	};
+});

@@ -26,6 +26,8 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
 
+	<script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
+
 	<script src="js/skel.min.js"></script>
 	<script src="js/skel-panels.min.js"></script>
 	<script src="js/init.js"></script>
@@ -35,9 +37,7 @@
 		<link rel="stylesheet" href="css/style-n1.css" />
 	</noscript>
 
-	<link rel="stylesheet" href="css/styles.css" />
-
-	<script src="http://code.angularjs.org/1.2.0-rc.3/angular.min.js"></script>
+	<script src="js/angular.js"></script>
 </head>
 
 
@@ -55,39 +55,13 @@
 		<!-- Create Event -->
 			<div class="wrapper">
 
-				<div class="container" ng-controller="EventCtrl as ctrl">
+				<div class="container" ng-controller="EventCtrl">
 					<div class="row">
-						<section class="12u feature">
-							<table class="table">
-								<tr>
-									<th>Title</th>
-									<th>Guests</th>
-									<th>Action</th>
-								</tr>
-								<c:forEach items="${events}" var="event">
-									<form action="email.html" method="post">
-										<input type="hidden" name="id" value="${event.id}">
-										<tr>
-											<td><a href="editEvent.html?id=${ event.id }">${ event.title }</a></td>
-											<td>
-												<c:forEach items="${event.guests}" var="guest">
-													<div class="guest-img pull-left text-center">
-	                                                    <img
-	                                                            ng-src="https://identicons.github.com/${ guest.name }.png">
-	                                                    <small class="text-muted">${ guest.name }</small>
-	                                                    <input type="checkbox" name="emails" value="${guest.name}">
-	                                                </div>
-												</c:forEach>
-											</td>
-											<td>
-												<textarea name="message" cols="10" rows="1" placeholder="Message"></textarea>
-												<input type="submit" class="button" name="submit" value="Email Guests">
-											</td>
-										</tr>
-										</form>
-								</c:forEach>
-							</table>
-						</section>
+						<form action="${id}/upload.html" method="post" enctype="multipart/form-data">
+							<div id="placeholder"></div>
+							Banner Image: <input type="file" name="banner" id="imageUpload" />
+							<input type="submit" name="upload" value="Upload"/>
+						</form>
 					</div>
 				</div>
 
@@ -106,6 +80,24 @@
 					</div>
 
 			</div>
+<script>
+	$("#imageUpload").change(function(){
+       
+	   readURL(this);
+	});
+	function readURL(input) {
 
+	   if (input.files && input.files[0]) {
+	       var reader = new FileReader();
+
+	       reader.onload = function (e) {
+	           $('#placeholder').attr('src', e.target.result);
+	       };
+
+	       reader.readAsDataURL(input.files[0]);
+	       
+	   }
+	}
+</script>
 </body>
 </html>

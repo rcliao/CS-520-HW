@@ -2,9 +2,11 @@ package envite.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.sql.Blob;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob; 
@@ -12,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.CascadeType;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "events")
@@ -34,7 +38,9 @@ public class Event implements Serializable {
 
 	// Store the banner image in database
 	@Lob
-	private Blob banner;
+	@Basic(fetch = FetchType.LAZY)
+	@Column(nullable = true)
+	private byte[] banner;
 
 	public Integer getId() {
 		return id;
@@ -74,5 +80,15 @@ public class Event implements Serializable {
 
 	public void setCreator(User creator) {
 		this.creator = creator;
+	}
+
+	@Transactional
+	public byte[] getBanner() {
+		return banner;
+	}
+
+	@Transactional
+	public void setBanner(byte[] banner) {
+		this.banner = banner;
 	}
 }

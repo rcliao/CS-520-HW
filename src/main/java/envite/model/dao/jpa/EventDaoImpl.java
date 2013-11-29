@@ -25,12 +25,14 @@ public class EventDaoImpl implements EventDao {
 	GuestDao guestDao;
 
 	@Override
+	@Transactional
     public Event getEvent( Integer id )
     {
         return entityManager.find( Event.class, id );
     }
 
 	@Override
+	@Transactional
 	public List<Event> getEvents( User user ) {
 		return entityManager
 				.createQuery(

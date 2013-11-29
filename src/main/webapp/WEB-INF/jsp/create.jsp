@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE HTML>
-<html ng-app>
+<html ng-app="envite">
 <head>
 	<title>Envite</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -35,7 +35,7 @@
 		<link rel="stylesheet" href="css/style-n1.css" />
 	</noscript>
 
-	<script src="http://code.angularjs.org/1.2.0-rc.3/angular.min.js"></script>
+	<script src="js/angular.js"></script>
 	<script src="js/eventCtrl.js"></script>
 </head>
 
@@ -54,7 +54,7 @@
 		<!-- Create Event -->
 			<div class="wrapper">
 
-				<div class="container" ng-controller="EventCtrl as ctrl">
+				<div class="container" ng-controller="EventCtrl">
 					<div class="row">
 						<form name="createEventForm">
 							<section class="8u feature">
@@ -66,13 +66,13 @@
 								</header>
 								<div class="row half">
 									<div class="11u">
-										<input name="title" ng-model="ctrl.event.title" placeholder="Event Title" type="text" class="text" required/>
+										<input name="title" ng-model="event.title" placeholder="Event Title" type="text" class="text" required/>
 										<span class="error" ng-show="createEventForm.title.$error.required">Required!</span><br>
 									</div>
 								</div>
 								<div class="row half">
 									<div class="11u">
-										<textarea name="message" ng-model="ctrl.event.message" placeholder="Message" class="textarea" required></textarea>
+										<textarea name="message" ng-model="event.message" placeholder="Message" class="textarea" required></textarea>
 										<span class="error" ng-show="createEventForm.message.$error.required">Required!</span><br>
 									</div>
 								</div>
@@ -84,16 +84,16 @@
 								</header>
 								<div class="row half">
 									<div class="12u">
-										<input ng-model="ctrl.guest.name" placeholder="Guest Name" type="text" class="text">
+										<input ng-model="guest.name" placeholder="Guest Name" type="text" class="text">
 									</div>
 									<div class="12u">
-										<input ng-model="ctrl.guest.email" placeholder="Guest Email" type="text" class="text">
+										<input ng-model="guest.email" placeholder="Guest Email" type="text" class="text">
 									</div>
 								</div>
 								<div class="row">
-									<span class="error" ng-show="ctrl.event.guests.length < 1">Need at least 1 Guest</span><br>
+									<span class="error" ng-show="event.guests.length < 1">Need at least 1 Guest</span><br>
 									<ul class="actions">
-										<li><a href="" class="button" ng-click="ctrl.addGuest()">Add Guest</a></li>
+										<li><a href="" class="button" ng-click="addGuest()">Add Guest</a></li>
 									</ul>
 								</div>
 								<div class="row half">
@@ -104,16 +104,16 @@
 												<th>Email</th>
 												<th>Delete</th>
 											</tr>
-											<tr ng-repeat="guest in ctrl.event.guests">
+											<tr ng-repeat="guest in event.guests">
 												<td><input ng-model="guest.name" type="text" class="text" required/></td>
 												<td><input ng-model="guest.email" type="text" class="text" required/></td>
-												<td><a href="" class="btn" ng-click="ctrl.deleteGuest($index)">Del</a></td>
+												<td><a href="" class="btn" ng-click="deleteGuest($index)">Del</a></td>
 											</tr>
 										</table>
 									</div>
 								</div>
 								<ul class="actions">
-									<li><button type="submit" class="button" ng-disabled="!createEventForm.$valid" ng-click="ctrl.createEvent()">Create Event!</button></li>
+									<li><button type="submit" class="button" ng-disabled="!createEventForm.$valid" ng-click="createEvent()">Create Event!</button></li>
 								</ul>
 							</section>
 						</form>
