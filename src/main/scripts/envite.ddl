@@ -1,6 +1,12 @@
 
+    create table authorities (
+        user_id int4 not null,
+        role varchar(255)
+    );
+
     create table events (
         id int4 not null,
+        banner oid,
         message varchar(255),
         title varchar(255),
         creator_id int4,
@@ -16,6 +22,7 @@
     create table guests (
         id int4 not null,
         email varchar(255),
+        emailed boolean not null,
         name varchar(255),
         respond boolean not null,
         primary key (id)
@@ -30,6 +37,11 @@
         username varchar(255) not null unique,
         primary key (id)
     );
+
+    alter table authorities 
+        add constraint FK2B0F13211E4D05A0 
+        foreign key (user_id) 
+        references users;
 
     alter table events 
         add constraint FKB307E1197949099F 

@@ -1,19 +1,23 @@
+    alter table authorities 
+        drop constraint FK2B0F13211E4D05A0;
 
-ALTER TABLE events_guests
-	DROP constraint FK8C59EB81BC3E0D95;
+    alter table events 
+        drop constraint FKB307E1197949099F;
 
-ALTER TABLE events_guests
-	DROP constraint FK8C59EB818589B511;
+    alter table events_guests 
+        drop constraint FK8C59EB818589B511;
 
-ALTER TABLE events
-	DROP constraint FKB307E1197949099F;
+    alter table events_guests 
+        drop constraint FK8C59EB81BC3E0D95;
 
-drop table events;
+	drop table authorities;
 
-drop table events_guests;
+    drop table events;
 
-drop table guests;
+    drop table events_guests;
 
-drop table users;
+    drop table guests;
 
-drop sequence hibernate_sequence;
+    drop table users;
+
+    drop sequence hibernate_sequence;

@@ -2,12 +2,19 @@ package envite.model;
 
 import java.io.Serializable;
 
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.CollectionTable;
 import javax.persistence.Entity;
+import javax.persistence.ElementCollection;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +35,13 @@ public class User implements Serializable {
 
 	@Transient
 	private String password2;
+
+	@JsonIgnore
+    @ElementCollection
+    @CollectionTable(name = "authorities",
+        joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles;
 
 	private String email;
 	private String firstName;
@@ -65,6 +79,16 @@ public class User implements Serializable {
 	public void setPassword2(String password2) {
 		this.password2 = password2;
 	}
+
+	public Set<String> getRoles()
+    {
+        return roles;
+    }
+
+    public void setRoles( Set<String> roles )
+    {
+        this.roles = roles;
+    }
 
 	public String getEmail() {
 		return email;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:security="http://www.springframework.org/schema/security"
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -8,7 +9,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
 
     <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver" />
@@ -30,14 +33,26 @@
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="localhost" />
-        <property name="username" value="cysun@localhost.localdomain" />
-        <property name="password" value="abcd" />
+        <property name="username" value="eric" />
     </bean>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="100000"/>
     </bean>
+
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:jdbc-user-service data-source-ref="dataSource" />
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:http auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/user/**" access="authenticated" />
+    </security:http>
+
+    <security:global-method-security pre-post-annotations="enabled" />
 
     <context:annotation-config />
 

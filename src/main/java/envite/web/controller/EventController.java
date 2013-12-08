@@ -88,6 +88,31 @@ public class EventController {
 
         event.setCreator(user);
 
+        eventDao.saveEvent( event );
+
+        event = eventDao.getEvents(user).get(eventDao.getEvents(user).size()-1);
+
+        return event;
+    }
+
+    @RequestMapping(value="/upload.html", method = RequestMethod.GET)
+    @Transactional
+    public String upload( ModelMap models, @RequestParam Integer id,
+                HttpSession session ) throws IOException {
+
+        if ( session.getAttribute("loginUser") == null ) return "redirect:/index.html";
+
+        models.put( "id", id );
+
+        return "upload";
+    }
+
+    @RequestMapping(value="/{id}/upload.html", method = RequestMethod.POST)
+    public String upload( @RequestParam("banner") MultipartFile banner, 
+        @PathVariable Integer id ) throws ServletException, MessagingException, IOException {
+        Event event = eventDao.getEvent(id);
+        event.setBanner(banner.getBytes());
+
         for ( Guest g : event.getGuests() ) {
             String from = event.getCreator().getEmail();
             String to = g.getEmail();
@@ -124,31 +149,6 @@ public class EventController {
             g.setEmailed(true);
             
         }
-
-        eventDao.saveEvent( event );
-
-        event = eventDao.getEvents(user).get(eventDao.getEvents(user).size()-1);
-
-        return event;
-    }
-
-    @RequestMapping(value="/upload.html", method = RequestMethod.GET)
-    @Transactional
-    public String upload( ModelMap models, @RequestParam Integer id,
-                HttpSession session ) throws IOException {
-
-        if ( session.getAttribute("loginUser") == null ) return "redirect:/index.html";
-
-        models.put( "id", id );
-
-        return "upload";
-    }
-
-    @RequestMapping(value="/{id}/upload.html", method = RequestMethod.POST)
-    public String upload( @RequestParam("banner") MultipartFile banner, 
-        @PathVariable Integer id ) throws IOException {
-        Event event = eventDao.getEvent(id);
-        event.setBanner(banner.getBytes());
 
         eventDao.saveEvent( event );
 

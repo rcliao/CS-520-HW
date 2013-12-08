@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
@@ -37,6 +39,7 @@ public class Event implements Serializable {
 	private User creator;
 
 	// Store the banner image in database
+	@JsonIgnore
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@Column(nullable = true)

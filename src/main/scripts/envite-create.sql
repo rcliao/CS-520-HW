@@ -1,5 +1,9 @@
 
-    
+    create table authorities (
+        user_id int4 not null,
+        role varchar(255)
+    );
+
     create table events (
         id int4 not null,
         banner oid,
@@ -34,6 +38,11 @@
         primary key (id)
     );
 
+    alter table authorities 
+        add constraint FK2B0F13211E4D05A0 
+        foreign key (user_id) 
+        references users;
+
     alter table events 
         add constraint FKB307E1197949099F 
         foreign key (creator_id) 
@@ -64,6 +73,9 @@
                 'Sun',
                 'abcd',
         'cysun');
+
+    INSERT INTO authorities
+                VALUES (1, 'admin');
 
     INSERT INTO events
                 VALUES (1,
