@@ -85,6 +85,11 @@ public class EventController {
                 HttpSession session )
     {
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+
+        models.put("username", name);
+
         models.put( "event", new Event() );
 
         return "create";
@@ -112,6 +117,11 @@ public class EventController {
     @Transactional
     public String upload( ModelMap models, @RequestParam Integer id,
                 HttpSession session ) throws IOException {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+
+        models.put("username", name);
 
         models.put( "id", id );
 
@@ -220,6 +230,8 @@ public class EventController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
 
+        models.put("username", name);
+
         User user = userDao.getUser(name);
 
         models.put( "events", eventDao.getEvents( user ) );
@@ -305,6 +317,8 @@ public class EventController {
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
+
+        models.put("username", name);
 
         User user = userDao.getUser(name);
 

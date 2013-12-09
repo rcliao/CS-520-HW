@@ -76,8 +76,6 @@ public class UserController {
 
         userDao.saveUser( user );
 
-        session.setAttribute( "loginUser", user );
-
         return "redirect:/index.html";
     }
 

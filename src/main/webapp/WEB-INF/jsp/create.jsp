@@ -36,6 +36,8 @@
 	</noscript>
 
 	<script src="js/angular.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.7.0.js"></script>
+
 	<script src="js/eventCtrl.js"></script>
 </head>
 
@@ -84,7 +86,7 @@
 								</header>
 								<div class="row half">
 									<div class="12u">
-										<input ng-model="guest.name" placeholder="Guest Name" type="text" class="text">
+										<input ng-model="guest.name" placeholder="Guest Name" type="text" class="text" typeahead="state.name for state in states | filter:$viewValue | limitTo:8" ng-change="retrieve()" typeahead-on-select="addGuestAuto($item, $model, $label)">
 									</div>
 									<div class="12u">
 										<input ng-model="guest.email" placeholder="Guest Email" type="text" class="text">
@@ -135,6 +137,56 @@
 					</div>
 
 			</div>
+	<script>
+		var app = angular.module('envite', ['ui.bootstrap']);
 
+		app.controller('EventCtrl', function($scope, $http) {
+			$scope.event = {
+				title: '',
+				message: '',
+				guests: []
+			};
+
+			$scope.states = [];
+
+			$scope.retrieve = function() {
+				$http({
+					method: 'GET',
+					url: 'guests.html?username='+"${username}"+'&guestName='+$scope.guest.name
+				}).success(	function(response){
+					// success
+					$scope.states = response;
+					console.log($scope.states);
+				});
+			};
+
+			$scope.addGuestAuto = function ($item, $model, $label) {
+				console.log($item)
+			    $scope.event.guests.push($item);
+				$scope.guest = {};
+			};
+
+			$scope.createEvent = function() {
+				$http({
+					method: 'POST',
+					url: 'create.html', 
+					data: $scope.event
+				})
+				.success( function(data) {
+					console.log(data);
+					window.location = "upload.html?id=" + data.id;
+				});
+			};
+
+			$scope.addGuest = function() {
+				$scope.event.guests.push($scope.guest);
+				$scope.guest = {};
+			};
+
+			$scope.deleteGuest = function(index) {
+				$scope.event.guests.splice(index, 1);
+			};
+		});
+	</script>
 </body>
 </html>
