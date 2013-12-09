@@ -54,6 +54,8 @@
 		<!-- Create Event -->
 			<div class="wrapper">
 
+				<h1>${ guestResult }</h1>
+
 				<div class="container" ng-controller="EventCtrl as ctrl">
 					<div class="row">
 						<form name="createEventForm">
