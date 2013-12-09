@@ -40,6 +40,11 @@
         unique (username)
     );
 
+    create table users_guests (
+        users_id int4 not null,
+        guests_id int4 not null
+    );
+
     alter table events 
         add constraint FKB307E1197949099F 
         foreign key (creator_id) 
@@ -54,5 +59,15 @@
         add constraint FK8C59EB81BC3E0D95 
         foreign key (events_id) 
         references events;
+
+    alter table users_guests 
+        add constraint FKD05AA3B28589B511 
+        foreign key (guests_id) 
+        references guests;
+
+    alter table users_guests 
+        add constraint FKD05AA3B2173DDE43 
+        foreign key (users_id) 
+        references users;
 
     create sequence hibernate_sequence;

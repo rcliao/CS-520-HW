@@ -1,6 +1,7 @@
 package envite.web.controller;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.io.File;
 import java.io.InputStream;
@@ -167,8 +168,8 @@ public class EventController {
                     + subject + "<h2><p>Message from "
                     + event.getCreator().getFirstName() + ": </p><p>"
                     + content
-                    + "<a href=\"" + baseUrl + "520-Envite/guests.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></br>"
-                    + "<a href=\"" + baseUrl + "520-Envite/guests.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a>"
+                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></br>"
+                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a>"
                     + "</body></html>"
             , true);
 
@@ -278,8 +279,8 @@ public class EventController {
                     + subject + "<h2><p>Message from "
                     + event.getCreator().getFirstName() + ": </p><p>"
                     + content
-                    + "<a href=\"" + baseUrl + "520-Envite/guests.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></br>"
-                    + "<a href=\"" + baseUrl + "520-Envite/guests.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a>"
+                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></br>"
+                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a>"
                     + "</body></html>"
             , true);
 
@@ -337,7 +338,7 @@ public class EventController {
         return "detail";
     }
 
-    @RequestMapping("/guests.html")
+    @RequestMapping("/guestRespond.html")
     @Transactional
     public String download( @RequestParam Integer id,
         @RequestParam boolean respond,
@@ -382,5 +383,23 @@ public class EventController {
         models.put("event", event);
 
         return "detail";
+    }
+
+    @RequestMapping("/guests.html")
+    @Transactional
+    public @ResponseBody List<Guest> download( @RequestParam String guestName,
+        @RequestParam String username ) throws IOException {
+
+        List<Guest> result = new ArrayList<Guest>();
+        
+        User user = userDao.getUser( username );
+
+        for ( Guest g: user.getGuests() ) {
+            if ( g.getName().toLowerCase().contains( guestName.toLowerCase() ) ) {
+                result.add(g);
+            }
+        }
+        
+        return result;
     }
 }

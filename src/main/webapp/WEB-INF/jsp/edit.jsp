@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE HTML>
-<html ng-app>
+<html ng-app="envite.edit">
 <head>
 	<title>Envite</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -36,6 +36,7 @@
 	</noscript>
 
 	<script src="http://code.angularjs.org/1.2.0-rc.3/angular.min.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.7.0.js"></script>
 </head>
 
 
@@ -136,6 +137,8 @@
 			</div>
 
 	<script>
+		angular.module('envite.edit', ['ui-bootstrap']);
+
 		function EventCtrl($http) {
 			this.event = {
 				id: ${ event.id },

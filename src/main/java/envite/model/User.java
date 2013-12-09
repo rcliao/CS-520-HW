@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.CollectionTable;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -51,6 +53,9 @@ public class User implements Serializable {
 	private String email;
 	private String firstName;
 	private String lastName;
+
+	@ManyToMany
+	private List<Guest> guests;
 
 	public User() {
 		enabled = true;
@@ -132,5 +137,13 @@ public class User implements Serializable {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public List<Guest> getGuests() {
+		return guests;
+	}
+
+	public void setGuests(List<Guest> guests) {
+		this.guests = guests;
 	}
 }
