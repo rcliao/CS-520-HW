@@ -108,6 +108,12 @@ public class EventController {
 
         eventDao.saveEvent( event );
 
+        for ( Guest g: event.getGuests() ) {
+            user.getGuests().add(g);
+        }
+
+        userDao.saveUser(user);
+
         event = eventDao.getEvents(user).get(eventDao.getEvents(user).size()-1);
 
         return event;
@@ -336,9 +342,17 @@ public class EventController {
     public @ResponseBody Event edited( @RequestBody final Event event,
                 HttpSession session ) throws ServletException {
 
-        event.setCreator( userDao.getUser( event.getCreator().getUsername() ) );
+        User user = userDao.getUser( event.getCreator().getUsername() );
+
+        event.setCreator( user );
 
         eventDao.saveEvent( event );
+
+        for ( Guest g: event.getGuests() ) {
+            user.getGuests().add(g);
+        }
+
+        userDao.saveUser(user);
 
         return event;
     }

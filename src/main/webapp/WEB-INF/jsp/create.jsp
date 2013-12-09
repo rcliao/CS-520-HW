@@ -38,7 +38,6 @@
 	<script src="js/angular.js"></script>
 	<script src="js/ui-bootstrap-tpls-0.7.0.js"></script>
 
-	<script src="js/eventCtrl.js"></script>
 </head>
 
 

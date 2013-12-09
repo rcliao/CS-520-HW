@@ -44,8 +44,11 @@ public class EventDaoImpl implements EventDao {
 	@Transactional
     @Override
     public Event saveEvent( Event event ) {
-    	for ( Guest guest:  event.getGuests() ) {
-    		guestDao.saveGuest( guest );
+    	for ( int i = 0; i < event.getGuests().size(); i ++ ) {
+    		Guest guest = guestDao.saveGuest( event.getGuests().get(i) );
+
+    		event.getGuests().set(i, guest);
+
     		entityManager.flush();
     	}
 
