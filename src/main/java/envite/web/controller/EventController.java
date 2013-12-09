@@ -39,6 +39,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.core.io.FileSystemResource;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -73,7 +76,6 @@ public class EventController {
     public String create( ModelMap models,
                 HttpSession session )
     {
-        if ( session.getAttribute("loginUser") == null ) return "redirect:/index.html";
 
         models.put( "event", new Event() );
 
@@ -84,7 +86,10 @@ public class EventController {
     public @ResponseBody Event created( @RequestBody Event event,
                 HttpSession session ) throws ServletException, MessagingException, IOException {   
 
-        User user = (User) session.getAttribute("loginUser");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+
+        User user = userDao.getUser(name);
 
         event.setCreator(user);
 
@@ -99,8 +104,6 @@ public class EventController {
     @Transactional
     public String upload( ModelMap models, @RequestParam Integer id,
                 HttpSession session ) throws IOException {
-
-        if ( session.getAttribute("loginUser") == null ) return "redirect:/index.html";
 
         models.put( "id", id );
 
@@ -181,9 +184,10 @@ public class EventController {
     public String list( ModelMap models,
                 HttpSession session )
     {
-        if ( session.getAttribute("loginUser") == null ) return "redirect:/index.html";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
 
-        User user = (User) session.getAttribute("loginUser");
+        User user = userDao.getUser(name);
 
         models.put( "events", eventDao.getEvents( user ) );
 
@@ -247,8 +251,6 @@ public class EventController {
     @Transactional
     public String edit( @RequestParam Integer id, ModelMap models, HttpSession session )
     {
-        if ( session.getAttribute("loginUser") == null ) return "redirect:/index.html";
-
         models.put( "event", eventDao.getEvent( id ) );
 
         return "edit";
@@ -259,7 +261,10 @@ public class EventController {
     public @ResponseBody Event edited( @RequestBody final Event event,
                 HttpSession session ) throws ServletException {
 
-        User user = (User) session.getAttribute("loginUser");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+
+        User user = userDao.getUser(name);
 
         event.setCreator(user);
 

@@ -54,7 +54,7 @@
                     always-use-default-target="true"              
                     authentication-failure-url="/index.html"/>
         <security:logout logout-success-url="/index.html" />
-        <security:intercept-url pattern="/user/**" access="authenticated" />
+        <security:intercept-url pattern="/create.html" access="authenticated" />
     </security:http>
 
     <security:global-method-security pre-post-annotations="enabled" />
