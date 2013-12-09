@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE HTML>
 <html>
@@ -135,7 +136,7 @@
 			<div id="footer-wrapper">
 
 				<!-- Footer -->
-				<c:if test="${ empty loginUser }">
+				<security:authorize access="!authenticated">
 					<div id="footer" class="container">
 						<header class="major">
 							<h2><a id="signup" name="signup">What are you waiting for!?</a></br>
@@ -187,7 +188,7 @@
 							</section>
 						</div>
 					</div>
-				</c:if>
+				</security:authorize>
 
 				<!-- Copyright -->
 					<div id="copyright" class="container">
