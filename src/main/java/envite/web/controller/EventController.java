@@ -40,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.core.io.FileSystemResource;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpSession;
@@ -251,22 +252,35 @@ public class EventController {
     @Transactional
     public String edit( @RequestParam Integer id, ModelMap models, HttpSession session )
     {
-        models.put( "event", eventDao.getEvent( id ) );
-
-        return "edit";
-    }
-
-    @RequestMapping(value="/editEvent.html", method = RequestMethod.POST)
-    @Transactional
-    public @ResponseBody Event edited( @RequestBody final Event event,
-                HttpSession session ) throws ServletException {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName(); //get logged in username
 
         User user = userDao.getUser(name);
 
-        event.setCreator(user);
+        if ( !user.getUsername().equals(eventDao.getEvent( id ).getCreator().getUsername()) )
+            return "redirect:/index.html";
+
+        models.put( "event", eventDao.getEvent( id ) );
+
+        return "edit";
+    }
+
+    @RequestMapping("/eventDetail.html")
+    @Transactional
+    public String detail( @RequestParam Integer id, ModelMap models, HttpSession session )
+    {
+        models.put( "event", eventDao.getEvent( id ) );
+
+        return "edit";
+    }
+
+    @PreAuthorize("principal.username == #event.creator.username")
+    @RequestMapping(value="/editEvent.html", method = RequestMethod.POST)
+    @Transactional
+    public @ResponseBody Event edited( @RequestBody final Event event,
+                HttpSession session ) throws ServletException {
+
+        System.out.println(event.getCreator().getUsername());
 
         eventDao.saveEvent( event );
 

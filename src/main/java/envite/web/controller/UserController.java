@@ -17,6 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.Set;
+import java.util.HashSet;
+
 import envite.model.User;
 import envite.model.dao.UserDao;
 import envite.web.validator.UserValidator;
@@ -62,6 +65,14 @@ public class UserController {
             models.put( "signupError", "SignupError" );
             return "index";
         }
+
+        user.setEnabled(true);
+
+        Set<String> roles = new HashSet<String>();
+
+        roles.add("user");
+
+        user.setRoles(roles);
 
         userDao.saveUser( user );
 

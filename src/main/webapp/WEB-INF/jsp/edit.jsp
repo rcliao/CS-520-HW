@@ -141,6 +141,10 @@
 				id: ${ event.id },
 				title: "${ event.title }",
 				message: "${ event.message }",
+				creator: {
+					id: ${ event.creator.id },
+					username: "${ event.creator.username }"
+				},
 				guests: [
 					<c:forEach items="${event.guests}" var="guest">
 						{ name: "${ guest.name }", email: "${ guest.email }" },
