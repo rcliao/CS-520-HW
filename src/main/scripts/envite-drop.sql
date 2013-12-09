@@ -1,6 +1,3 @@
-    alter table authorities 
-        drop constraint FK2B0F13211E4D05A0;
-
     alter table events 
         drop constraint FKB307E1197949099F;
 

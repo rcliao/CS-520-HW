@@ -265,26 +265,26 @@ public class EventController {
         return "edit";
     }
 
-    @RequestMapping("/eventDetail.html")
-    @Transactional
-    public String detail( @RequestParam Integer id, ModelMap models, HttpSession session )
-    {
-        models.put( "event", eventDao.getEvent( id ) );
-
-        return "edit";
-    }
-
     @PreAuthorize("principal.username == #event.creator.username")
     @RequestMapping(value="/editEvent.html", method = RequestMethod.POST)
     @Transactional
     public @ResponseBody Event edited( @RequestBody final Event event,
                 HttpSession session ) throws ServletException {
 
-        System.out.println(event.getCreator().getUsername());
+        event.setCreator( userDao.getUser( event.getCreator().getUsername() ) );
 
         eventDao.saveEvent( event );
 
         return event;
+    }
+
+    @RequestMapping("/eventDetail.html")
+    @Transactional
+    public String detail( @RequestParam Integer id, ModelMap models, HttpSession session )
+    {
+        models.put( "event", eventDao.getEvent( id ) );
+
+        return "detail";
     }
 
 }
