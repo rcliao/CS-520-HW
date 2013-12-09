@@ -139,6 +139,8 @@
 		var app = angular.module('envite', ['ui.bootstrap']);
 
 		app.controller('EventCtrl', function($scope, $http) {
+
+			$scope.guest = { emailed:false };
 			$scope.event = {
 				id: ${ event.id },
 				title: "${ event.title }",
@@ -149,7 +151,7 @@
 				},
 				guests: [
 					<c:forEach items="${event.guests}" var="guest">
-						{ name: "${ guest.name }", email: "${ guest.email }" },
+						{ name: "${ guest.name }", email: "${ guest.email }", emailed: "${ guest.emailed }" },
 					</c:forEach>
 				]
 			};
@@ -169,13 +171,13 @@
 			$scope.addGuestAuto = function ($item, $model, $label) {
 				console.log($item)
 			    $scope.event.guests.push($item);
-				$scope.guest = {};
+			    $scope.guest = { emailed:false };
 			};
 
 			$scope.createEvent = function() {
 				$http({
 					method: 'POST',
-					url: 'create.html', 
+					url: 'editEvent.html', 
 					data: $scope.event
 				})
 				.success( function(data) {

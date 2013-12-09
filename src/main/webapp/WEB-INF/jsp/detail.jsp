@@ -118,47 +118,5 @@
 					</div>
 
 			</div>
-
-	<script>
-		function EventCtrl($http) {
-			this.event = {
-				id: ${ event.id },
-				title: "${ event.title }",
-				message: "${ event.message }",
-				creator: {
-					id: ${ event.creator.id },
-					username: "${ event.creator.username }"
-				},
-				guests: [
-					<c:forEach items="${event.guests}" var="guest">
-						{ name: "${ guest.name }", email: "${ guest.email }", respond: ${ guest.respond } },
-					</c:forEach>
-				]
-			};
-
-			this.$http = $http;
-		};
-
-		EventCtrl.prototype.createEvent = function() {
-
-			this.$http.post('editEvent.html', this.event)
-				.success( function() {
-					window.location = "events.html";
-				});
-		};
-
-		EventCtrl.prototype.addGuest = function() {
-
-			this.event.guests.push(this.guest);
-
-			this.guest = {};
-		};
-
-		EventCtrl.prototype.deleteGuest = function(index) {
-
-		    this.event.guests.splice(index, 1);
-
-		}
-	</script>
 </body>
 </html>

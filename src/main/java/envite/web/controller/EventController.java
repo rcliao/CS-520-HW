@@ -144,61 +144,63 @@ public class EventController {
         String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
 
         for ( Guest g : event.getGuests() ) {
-            String from = event.getCreator().getEmail();
-            String to = g.getEmail();
-            String subject = event.getTitle();
-            String content = event.getMessage();
+            if (!g.getEmailed()) {
+                String from = event.getCreator().getEmail();
+                String to = g.getEmail();
+                String subject = event.getTitle();
+                String content = event.getMessage();
 
-            String guestNameHashed = null;
+                String guestNameHashed = null;
 
-            try {
-             
-                //Create MessageDigest object for MD5
-                MessageDigest digest = MessageDigest.getInstance("MD5");
+                try {
+                 
+                    //Create MessageDigest object for MD5
+                    MessageDigest digest = MessageDigest.getInstance("MD5");
 
-                String secret = g.getName() + ":" + g.getEmail();
+                    String secret = g.getName() + ":" + g.getEmail();
 
-                //Update password string in message digest
-                digest.update(secret.getBytes(), 0, secret.length());
+                    //Update password string in message digest
+                    digest.update(secret.getBytes(), 0, secret.length());
 
-                //Converts message digest value in base 16 (hex)
-                guestNameHashed = new BigInteger(1, digest.digest()).toString(16);
+                    //Converts message digest value in base 16 (hex)
+                    guestNameHashed = new BigInteger(1, digest.digest()).toString(16);
 
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+
+                MimeMessage message = mailSender.createMimeMessage();
+
+                MimeMessageHelper helper;
+
+                helper = new MimeMessageHelper(message, true);
+                helper.setFrom("no.reply@envite.com <" + from + ">");
+                helper.setTo(to);
+                helper.setSubject(subject);
+
+                helper.setText("<html><body><img src='cid:identifier1234'><hr><h1>Dear " + g.getName()
+                        + ": </h1><h2>You have been invited by "
+                        + event.getCreator().getFirstName() + " "
+                        + event.getCreator().getLastName() + " to the event "
+                        + subject + "<h2><p>Message from "
+                        + event.getCreator().getFirstName() + ": </p><p>"
+                        + content
+                        + "</p>"
+                        + "<p><a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></p>"
+                        + "<p><a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a></p>"
+                        + "</body></html>"
+                , true);
+
+                File image = File.createTempFile("imageAttachment", ".tmp");
+
+                FileUtils.writeByteArrayToFile(image, event.getBanner());
+                FileSystemResource res = new FileSystemResource(image);
+
+                helper.addInline("identifier1234", res);
+
+                mailSender.send(message);
+                g.setEmailed(true);
             }
-
-            MimeMessage message = mailSender.createMimeMessage();
-
-            MimeMessageHelper helper;
-
-            helper = new MimeMessageHelper(message, true);
-            helper.setFrom("no.reply@envite.com <" + from + ">");
-            helper.setTo(to);
-            helper.setSubject(subject);
-
-            helper.setText("<html><body><img src='cid:identifier1234'><hr><h1>Dear " + g.getName()
-                    + ": </h1><h2>You have been invited by "
-                    + event.getCreator().getFirstName() + " "
-                    + event.getCreator().getLastName() + " to the event "
-                    + subject + "<h2><p>Message from "
-                    + event.getCreator().getFirstName() + ": </p><p>"
-                    + content
-                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></br>"
-                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a>"
-                    + "</body></html>"
-            , true);
-
-            File image = File.createTempFile("imageAttachment", ".tmp");
-
-            FileUtils.writeByteArrayToFile(image, event.getBanner());
-            FileSystemResource res = new FileSystemResource(image);
-
-            helper.addInline("identifier1234", res);
-
-            mailSender.send(message);
-            g.setEmailed(true);
-            
         }
 
         event.setCreator( userDao.getUser( event.getCreator().getUsername() ) );
@@ -297,8 +299,9 @@ public class EventController {
                     + subject + "<h2><p>Message from "
                     + event.getCreator().getFirstName() + ": </p><p>"
                     + content
-                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></br>"
-                    + "<a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a>"
+                    + "</p>"
+                    + "<p><a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></p>"
+                    + "<p><a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a></p>"
                     + "</body></html>"
             , true);
 
@@ -311,8 +314,8 @@ public class EventController {
 
             mailSender.send(message);
             g.setEmailed(true);
-            
         }
+        
 
         return "redirect:/events.html";
     }
@@ -340,13 +343,80 @@ public class EventController {
     @RequestMapping(value="/editEvent.html", method = RequestMethod.POST)
     @Transactional
     public @ResponseBody Event edited( @RequestBody final Event event,
-                HttpSession session ) throws ServletException {
+                HttpSession session, HttpServletRequest request ) throws MessagingException, IOException, ServletException {
 
         User user = userDao.getUser( event.getCreator().getUsername() );
 
+        Event oldEvent = eventDao.getEvent( event.getId() );
+
+        byte[] oldBanner = oldEvent.getBanner();
+
         event.setCreator( user );
+        event.setBanner( oldBanner );
 
         eventDao.saveEvent( event );
+
+        String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
+
+        for ( Guest g : event.getGuests() ) {
+            if (!g.getEmailed()) {
+                String from = event.getCreator().getEmail();
+                String to = g.getEmail();
+                String subject = event.getTitle();
+                String content = event.getMessage();
+
+                String guestNameHashed = null;
+
+                try {
+                 
+                    //Create MessageDigest object for MD5
+                    MessageDigest digest = MessageDigest.getInstance("MD5");
+
+                    String secret = g.getName() + ":" + g.getEmail();
+
+                    //Update password string in message digest
+                    digest.update(secret.getBytes(), 0, secret.length());
+
+                    //Converts message digest value in base 16 (hex)
+                    guestNameHashed = new BigInteger(1, digest.digest()).toString(16);
+
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+
+                MimeMessage message = mailSender.createMimeMessage();
+
+                MimeMessageHelper helper;
+
+                helper = new MimeMessageHelper(message, true);
+                helper.setFrom("no.reply@envite.com <" + from + ">");
+                helper.setTo(to);
+                helper.setSubject(subject);
+
+                helper.setText("<html><body><img src='cid:identifier1234'><hr><h1>Dear " + g.getName()
+                        + ": </h1><h2>You have been invited by "
+                        + event.getCreator().getFirstName() + " "
+                        + event.getCreator().getLastName() + " to the event "
+                        + subject + "<h2><p>Message from "
+                        + event.getCreator().getFirstName() + ": </p><p>"
+                        + content
+                        + "</p>"
+                        + "<p><a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=true\">Accept</a></p>"
+                        + "<p><a href=\"" + baseUrl + "520-Envite/guestRespond.html?id=" + event.getId() + "&guestName=" + guestNameHashed + "&respond=false\">Reject</a></p>"
+                        + "</body></html>"
+                , true);
+
+                File image = File.createTempFile("imageAttachment", ".tmp");
+
+                FileUtils.writeByteArrayToFile(image, event.getBanner());
+                FileSystemResource res = new FileSystemResource(image);
+
+                helper.addInline("identifier1234", res);
+
+                mailSender.send(message);
+                g.setEmailed(true);
+            }
+        }
 
         for ( Guest g: event.getGuests() ) {
             user.getGuests().add(g);
