@@ -1,7 +1,7 @@
 
     create table authorities (
-        user_id int4 not null,
-        role varchar(255)
+        username varchar(255) not null,
+        authority varchar(255)
     );
 
     create table events (
@@ -31,17 +31,14 @@
     create table users (
         id int4 not null,
         email varchar(255),
+        enabled boolean not null,
         firstName varchar(255),
         lastName varchar(255),
         password varchar(255),
         username varchar(255) not null unique,
-        primary key (id)
+        primary key (id),
+        unique (username)
     );
-
-    alter table authorities 
-        add constraint FK2B0F13211E4D05A0 
-        foreign key (user_id) 
-        references users;
 
     alter table events 
         add constraint FKB307E1197949099F 
@@ -69,13 +66,14 @@
     INSERT INTO users
                 VALUES (1,
                 'cysun@localhost.localdomain',
+                true,
                 'Chengyu',
                 'Sun',
                 'abcd',
         'cysun');
 
     INSERT INTO authorities
-                VALUES (1, 'admin');
+                VALUES ('cysun', 'admin');
 
     INSERT INTO events
                 VALUES (1,

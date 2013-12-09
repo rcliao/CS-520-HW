@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.servlet.http.HttpSession;
 
 import envite.model.User;
@@ -28,28 +31,6 @@ public class UserController {
     @Autowired
     UserValidator userValidator;
 
-    @RequestMapping(value= "/login.html", method = RequestMethod.POST)
-    public String login( @ModelAttribute User user,
-                ModelMap models,
-                HttpSession session )
-    {
-        User userInDB = userDao.getUser( user.getUsername() );
-
-        if ( user.getPassword().equals(userInDB.getPassword() ) )
-        {
-            session.setAttribute("loginUser", userInDB);
-
-            return "redirect:/index.html";
-        }
-        else
-        {
-            models.put( "error", "Username and password not match" );
-
-            return "index";
-        }
-
-    }
-
     @RequestMapping(value= "/logout.html", method = RequestMethod.GET)
     public String logout( @ModelAttribute User user,
                 HttpSession session )
@@ -63,6 +44,11 @@ public class UserController {
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String add1( ModelMap models )
     {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+
+        models.put("username", name);
+
         models.put( "user", new User() );
         return "index";
     }

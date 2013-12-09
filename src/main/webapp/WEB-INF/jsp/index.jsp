@@ -46,16 +46,17 @@
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	        <h4 class="modal-title" id="myModalLabel">User Login</h4>
 	      </div>
-	      <form:form modelAttribute="user" method="post" action="login.html">
+	      <form name="login" method="post" action="<c:url value='/j_spring_security_check' />">
 	      <div class="modal-body">
 			<div class="row half">
 				<div class="6u">
-					<form:input path="username" placeholder="Name" type="text" class="text" required="true" />
-					<form:errors path="username" />
+					<input name="j_username" placeholder="Username" type="text" class="text" required="true" />
 				</div>
 				<div class="6u">
-					<form:input path="password" placeholder="Password" type="password" class="text" required="true" />
-					<form:errors path="password" />
+					<input name="j_password" placeholder="Password" type="password" class="text" required="true" />
+				</div>
+				<div class="12u">
+					<input type="checkbox" name="_spring_security_remember_me"> Remember me on this computer
 				</div>
 				<div class="12u text-center">
 					${ error }
@@ -64,9 +65,9 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="submit" class="btn btn-primary">Sign In</button>
+	        <input type="submit" class="btn btn-primary" name="login" value="Sign In">
 	      </div>
-	      </form:form>
+	      </form>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->

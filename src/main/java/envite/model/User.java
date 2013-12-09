@@ -3,6 +3,7 @@ package envite.model;
 import java.io.Serializable;
 
 import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.Column;
 import javax.persistence.CollectionTable;
@@ -39,13 +40,22 @@ public class User implements Serializable {
 	@JsonIgnore
     @ElementCollection
     @CollectionTable(name = "authorities",
-        joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
+        joinColumns = @JoinColumn(name = "username", referencedColumnName="username"))
+    @Column(name = "authority")
     private Set<String> roles;
+
+    @JsonIgnore
+    @Column(nullable = false)
+    private boolean enabled;
 
 	private String email;
 	private String firstName;
 	private String lastName;
+
+	public User() {
+		enabled = true;
+		roles = new HashSet<String>();
+	}
 
 	// getters / setters
 	public Integer getId() {
@@ -93,6 +103,16 @@ public class User implements Serializable {
 	public String getEmail() {
 		return email;
 	}
+
+	public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled( boolean enabled )
+    {
+        this.enabled = enabled;
+    }
 
 	public void setEmail(String email) {
 		this.email = email;
